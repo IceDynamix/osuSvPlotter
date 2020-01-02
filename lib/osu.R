@@ -32,7 +32,8 @@ osu.parseMap <- function(path) {
     sectionContent <- osuFile[sectionStartLine:sectionEndLine]
 
     # Extraction of the condition for readability
-    isKeyValueSection <- title %in% c("[General]", "[Metadata]", "[Editor]", "[Difficulty]")
+    # Even though this is a osu!mania focused tool, I'm adding [Colours] for good measure
+    isKeyValueSection <- title %in% c("[General]", "[Metadata]", "[Editor]", "[Difficulty]", "[Colours]")
 
     if (isKeyValueSection) {
 
@@ -75,19 +76,25 @@ osu.parseMap <- function(path) {
 
     } else if (title == "[HitObjects]") {
 
-      hitObjectColumnNames <- c(
-        "x", "y", "time", "type",
-        "hitSound", "objectParams"
-      )
+      # Oh hell no I am NOT dealing with gamemodes other than mania
+      # because sliders break EVERYTHING
+      mode <- util.lookup("Mode", mapData)
+      if (mode == 3) {
 
-      hitObjects <- osu.getTable(
-        sectionContent = sectionContent,
-        separator = ",",
-        headers = hitObjectColumnNames
-      )
+        hitObjectColumnNames <- c(
+          "x", "y", "time", "type",
+          "hitSound", "objectParams"
+        )
+
+        hitObjects <- osu.getTable(
+          sectionContent = sectionContent,
+          separator = ",",
+          headers = hitObjectColumnNames
+        )
+
+      }
 
     }
-
 
   }
 
@@ -107,7 +114,7 @@ osu.parseMap <- function(path) {
 #' @param separator Which character splits the text into columns
 #' @param headers Vector of column names, must be the same length as the column count
 #' @return Data frame of the parsed text
-osu.getTable <- function(sectionContent, separator, headers) {
+osu.getTable <- function(sectionContent, separator, headers = NULL) {
   # Using my own table wrapper for convenience
 
   table <- read.table(
