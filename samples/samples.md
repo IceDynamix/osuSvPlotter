@@ -12,5 +12,5 @@
 [hysteric_night_girl]: mania/hysteric_night_girl.png
 [kamah]: mania/kamah.png
 [killerbeast]: mania/killerbeast.png
-[zauberkugel]: osu/zauberkugel.png
-[dragonlands]: taiko/dragonlands.png
+[zauberkugel]: osu/zauberkugel_(pishifat).png
+[dragonlands]: taiko/dragonlands_(Faputa).png
